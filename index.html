@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ZD Quiz</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+}
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+h1 {
+    text-align: center;
+    font-size: 48px;
+    color: #2a5298;
+}
+
+.question {
+    background: #f4f7ff;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.question h3 {
+    color: #1e3c72;
+}
+
+label {
+    display: block;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+label:hover {
+    background: #2a5298;
+    color: white;
+}
+
+button {
+    display: block;
+    margin: 30px auto;
+    padding: 15px 40px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    background: #2a5298;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+#result {
+    text-align: center;
+    font-size: 22px;
+    color: #1e3c72;
+    margin-top: 20px;
+}
+
+#linkBox {
+    text-align: center;
+    margin-top: 15px;
+    display: none;
+}
+
+#linkBox a {
+    background: #2a5298;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>ZD</h1>
+
+<form id="quiz">
+
+<script>
+const questions = [
+["HTML stands for?", "Hyper Text Markup Language", "High Text Machine Language", "Hyper Tool Language"],
+["CSS is used for?", "Styling", "Logic", "Database"],
+["Which runs in browser?", "JavaScript", "C++", "Java"],
+["Which is not programming language?", "HTML", "C++", "Python"],
+["CPU stands for?", "Central Processing Unit", "Computer Power Unit", "Core Process Unit"],
+["RAM is?", "Volatile Memory", "Permanent Memory", "Secondary Storage"],
+["Which is OS?", "Windows", "HTML", "SQL"],
+["Which tag is for image?", "img", "pic", "src"],
+["Which tag creates link?", "a", "link", "url"],
+["Which is browser?", "Chrome", "Linux", "Windows"],
+["C++ is?", "Object Oriented", "Markup Language", "Database"],
+["Which is database?", "MySQL", "HTML", "CSS"],
+["Java was developed by?", "Sun Microsystems", "Microsoft", "Apple"],
+["HTML file extension?", ".html", ".css", ".exe"],
+["Which is input device?", "Keyboard", "Monitor", "Printer"],
+["Which is output device?", "Monitor", "Keyboard", "Mouse"],
+["Binary of 2?", "10", "01", "11"],
+["CSS stands for?", "Cascading Style Sheets", "Creative Style System", "Computer Style Sheet"],
+["Which tag is heading?", "h1", "p", "div"],
+["Internet is?", "Network of networks", "Single network", "LAN"]
+];
+
+document.write(
+questions.map((q,i)=>`
+<div class="question">
+<h3>${i+1}. ${q[0]}</h3>
+<label><input type="radio" name="q${i}" value="1"> ${q[1]}</label>
+<label><input type="radio" name="q${i}" value="0"> ${q[2]}</label>
+<label><input type="radio" name="q${i}" value="0"> ${q[3]}</label>
+</div>`).join("")
+);
+</script>
+
+<button type="button" onclick="submitQuiz()">Submit Quiz</button>
+</form>
+
+<div id="result"></div>
+
+<div id="linkBox">
+<a href="https://example.com" target="_blank">Go to Result Page</a>
+</div>
+
+</div>
+
+<script>
+function submitQuiz() {
+    let score = 0;
+    document.querySelectorAll('input[type="radio"]:checked')
+        .forEach(r => score += parseInt(r.value));
+
+    document.getElementById("result").innerHTML =
+        "Your Score: " + score + " / 20";
+
+    document.getElementById("linkBox").style.display = "block";
+}
+</script>
+
+</body>
+</html>
