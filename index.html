@@ -2,336 +2,311 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZD Quiz Login</title>
+<title>ZD Quiz </title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f0f4f7;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #ffafbd, #ffc3a0, #2193b0);
+    color: #fff;
+}
 
-  .container {
-    background: white;
-    padding: 25px 30px;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    width: 400px;
-    margin-bottom: 30px;
-  }
-
-  h2 {
+/* LOGIN BOX */
+.login-box {
+    max-width: 450px;
     text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-
-  input[type=text], input[type=password], input[type=radio] {
-    width: 100%;
-    padding: 10px 12px;
-    margin-top: 5px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-  }
-
-  input[type=radio] {
-    width: auto;
-    margin-right: 8px;
-  }
-
-  .form-group, .question {
-    margin-bottom: 20px;
-  }
-
-  .error {
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
-    display: none;
-  }
-
-  button {
-    width: 100%;
+    margin: 100px auto;
+    background: rgba(0,0,0,0.7);
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+.login-box h1 {
+    color: #00ffe0;
+    margin-bottom: 25px;
+    text-shadow: 1px 1px 5px #6a11cb;
+}
+.login-box input {
+    width: 90%;
     padding: 12px;
-    background-color: #007BFF;
-    border: none;
-    border-radius: 8px;
-    color: white;
+    margin: 12px 0 0 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
     font-size: 16px;
+    outline: none;
+}
+.login-box input:focus {
+    border-color: #00ffe0;
+    box-shadow: 0 0 10px rgba(0,255,224,0.5);
+}
+button {
+    padding: 12px 45px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(45deg, #00ffe0, #6a11cb);
+    color: white;
+    font-size: 18px;
     cursor: pointer;
-    margin-top: 10px;
-  }
+    margin: 15px 5px 5px 5px;
+}
 
-  button:hover {
-    background-color: #0056b3;
-  }
+/* ERROR MESSAGES BELOW INPUTS */
+.errorMsg {
+    color: #ff5252;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: none;
+}
 
-  label {
+/* QUIZ CONTAINER */
+.container {
+    display: none;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    background: linear-gradient(135deg, #000000, #D80027, #006600); /* Afghanistan flag colors */
+    color: #fff;
+}
+h1 {
+    text-align: center;
+    font-size: 48px;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 5px #000;
+}
+.question {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+label {
     display: block;
-    margin-bottom: 5px;
-  }
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 12px;
+    cursor: pointer;
+    color: #fff;
+    transition: 0.3s;
+}
+label:hover {
+    background: rgba(0,255,224,0.3);
+    color: #00ffe0;
+}
+
+/* WARNING MESSAGE */
+#warnMsg {
+    color: #fffb00;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+/* RESULT AND ENCOURAGEMENT */
+#result { text-align: center; font-size: 24px; margin-top: 25px; color: #00ffe0; }
+#encouragement { text-align: center; font-size: 22px; color: #ffeb3b; font-weight: bold; margin-top: 15px; text-shadow: 1px 1px 3px black;}
+.wrong {
+    background: rgba(255,0,0,0.3);
+    padding: 18px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+}
+.correct { color: #00ff00; font-weight: bold; }
+#navBtns { text-align: center; margin-top: 20px; }
+
+/* FLOWER ANIMATION */
+.flower {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: url('https://cdn-icons-png.flaticon.com/512/616/616408.png') no-repeat center/contain;
+    pointer-events: none;
+    animation: fall 3s linear forwards;
+}
+@keyframes fall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(600px) rotate(360deg); opacity: 0; }
+}
 </style>
 </head>
 <body>
 
-<!-- LOGIN FORM -->
-<div class="container" id="loginContainer">
-  <h2>ZD Login</h2>
-  <form id="loginForm">
-    <div class="form-group">
-      <input type="text" id="rollNumber" placeholder="Roll Number">
-      <div class="error" id="rollError">Roll number is required</div>
-    </div>
+<!-- LOGIN -->
+<div class="login-box" id="loginBox">
+    <h1>ZD Quiz Login</h1>
+    
+    <input type="text" id="name" placeholder="Name">
+    <div id="nameErr" class="errorMsg">Name is required!</div>
 
-    <div class="form-group">
-      <input type="password" id="password" placeholder="Password">
-      <div class="error" id="passwordError">Password must be the reverse of roll number</div>
-    </div>
+    <input type="number" id="roll" placeholder="Roll Number (1 - 100000)">
+    <div id="rollErr" class="errorMsg">Roll Number must be between 1 and 100000!</div>
 
-    <button type="submit">Login</button>
-  </form>
+    <input type="text" id="class" placeholder="Class">
+    <div id="classErr" class="errorMsg">Class is required!</div>
+
+    <input type="password" id="password" placeholder="Password (Reverse of Roll)">
+    <div id="passErr" class="errorMsg">Incorrect password! Please re-enter.</div>
+
+    <button onclick="login()">Start Quiz</button>
 </div>
 
-<!-- QUIZ FORM -->
-<div class="container" id="quizContainer" style="display:none;">
-  <h2>ZD Quiz</h2>
-  <form id="quizForm">
-    <!-- Generate 20 MCQs -->
-    <div class="question">
-      <label>1. What is 2 + 2?</label>
-      <input type="radio" name="q1" value="3"> 3
-      <input type="radio" name="q1" value="4"> 4
-      <input type="radio" name="q1" value="5"> 5
-      <div class="error" id="q1Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>2. What is the capital of France?</label>
-      <input type="radio" name="q2" value="London"> London
-      <input type="radio" name="q2" value="Paris"> Paris
-      <input type="radio" name="q2" value="Berlin"> Berlin
-      <div class="error" id="q2Error">Please answer this question</div>
-    </div>
-
-    <!-- Add 18 more questions similarly -->
-    <div class="question">
-      <label>3. Which is a programming language?</label>
-      <input type="radio" name="q3" value="Python"> Python
-      <input type="radio" name="q3" value="HTML"> HTML
-      <input type="radio" name="q3" value="CSS"> CSS
-      <div class="error" id="q3Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>4. 5 * 6 = ?</label>
-      <input type="radio" name="q4" value="30"> 30
-      <input type="radio" name="q4" value="20"> 20
-      <input type="radio" name="q4" value="25"> 25
-      <div class="error" id="q4Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>5. Sun rises from?</label>
-      <input type="radio" name="q5" value="West"> West
-      <input type="radio" name="q5" value="East"> East
-      <input type="radio" name="q5" value="North"> North
-      <div class="error" id="q5Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>6. HTML stands for?</label>
-      <input type="radio" name="q6" value="Hyper Text Markup Language"> Hyper Text Markup Language
-      <input type="radio" name="q6" value="High Text Markup Language"> High Text Markup Language
-      <input type="radio" name="q6" value="Hyper Text Markdown Language"> Hyper Text Markdown Language
-      <div class="error" id="q6Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>7. Largest planet in solar system?</label>
-      <input type="radio" name="q7" value="Earth"> Earth
-      <input type="radio" name="q7" value="Jupiter"> Jupiter
-      <input type="radio" name="q7" value="Mars"> Mars
-      <div class="error" id="q7Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>8. 12 / 4 = ?</label>
-      <input type="radio" name="q8" value="3"> 3
-      <input type="radio" name="q8" value="4"> 4
-      <input type="radio" name="q8" value="2"> 2
-      <div class="error" id="q8Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>9. What color is sky?</label>
-      <input type="radio" name="q9" value="Blue"> Blue
-      <input type="radio" name="q9" value="Green"> Green
-      <input type="radio" name="q9" value="Red"> Red
-      <div class="error" id="q9Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>10. 10 - 3 = ?</label>
-      <input type="radio" name="q10" value="7"> 7
-      <input type="radio" name="q10" value="6"> 6
-      <input type="radio" name="q10" value="8"> 8
-      <div class="error" id="q10Error">Please answer this question</div>
-    </div>
-
-    <!-- Questions 11 to 20 -->
-    <div class="question">
-      <label>11. Water formula?</label>
-      <input type="radio" name="q11" value="H2O"> H2O
-      <input type="radio" name="q11" value="CO2"> CO2
-      <input type="radio" name="q11" value="O2"> O2
-      <div class="error" id="q11Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>12. First month of year?</label>
-      <input type="radio" name="q12" value="January"> January
-      <input type="radio" name="q12" value="March"> March
-      <input type="radio" name="q12" value="June"> June
-      <div class="error" id="q12Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>13. 9 + 10 = ?</label>
-      <input type="radio" name="q13" value="19"> 19
-      <input type="radio" name="q13" value="21"> 21
-      <input type="radio" name="q13" value="20"> 20
-      <div class="error" id="q13Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>14. Smallest prime number?</label>
-      <input type="radio" name="q14" value="0"> 0
-      <input type="radio" name="q14" value="1"> 1
-      <input type="radio" name="q14" value="2"> 2
-      <div class="error" id="q14Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>15. Color of leaves?</label>
-      <input type="radio" name="q15" value="Green"> Green
-      <input type="radio" name="q15" value="Blue"> Blue
-      <input type="radio" name="q15" value="Red"> Red
-      <div class="error" id="q15Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>16. 7 * 3 = ?</label>
-      <input type="radio" name="q16" value="21"> 21
-      <input type="radio" name="q16" value="24"> 24
-      <input type="radio" name="q16" value="20"> 20
-      <div class="error" id="q16Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>17. Opposite of up?</label>
-      <input type="radio" name="q17" value="Down"> Down
-      <input type="radio" name="q17" value="Left"> Left
-      <input type="radio" name="q17" value="Right"> Right
-      <div class="error" id="q17Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>18. 15 / 3 = ?</label>
-      <input type="radio" name="q18" value="5"> 5
-      <input type="radio" name="q18" value="6"> 6
-      <input type="radio" name="q18" value="4"> 4
-      <div class="error" id="q18Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>19. Fastest land animal?</label>
-      <input type="radio" name="q19" value="Cheetah"> Cheetah
-      <input type="radio" name="q19" value="Lion"> Lion
-      <input type="radio" name="q19" value="Tiger"> Tiger
-      <div class="error" id="q19Error">Please answer this question</div>
-    </div>
-
-    <div class="question">
-      <label>20. 8 + 7 = ?</label>
-      <input type="radio" name="q20" value="15"> 15
-      <input type="radio" name="q20" value="14"> 14
-      <input type="radio" name="q20" value="16"> 16
-      <div class="error" id="q20Error">Please answer this question</div>
-    </div>
-
-    <button type="submit">Submit Quiz</button>
-  </form>
+<!-- QUIZ -->
+<div class="container" id="quizBox">
+<h1>ZD Quiz - Layla & Majnun</h1>
+<div id="questionContainer"></div>
+<div id="warnMsg">⚠ Please select an answer!</div>
+<div id="navBtns">
+    <button onclick="prevQuestion()">Previous</button>
+    <button onclick="nextQuestion()">Next</button>
+</div>
+<div id="result"></div>
+<div id="wrongAnswers"></div>
+<div id="encouragement"></div>
 </div>
 
 <script>
-  // LOGIN VALIDATION
-  const loginForm = document.getElementById('loginForm');
-  const loginContainer = document.getElementById('loginContainer');
-  const quizContainer = document.getElementById('quizContainer');
+// QUESTIONS
+const questions = [
+["Who was Majnun?", "Qays ibn al-Mulawwah", "Layla bint Mahdi", "Ward Althaqafi", "Nizami Ganjavi"],
+["Who wrote the famous Layla and Majnun poem in 1188?", "Nizami Ganjavi", "Amir Khusrow Dehlavi", "Fuzuli", "Ward Althaqafi"],
+["Why was Qays called Majnun?", "Obsessed with Layla", "Married another woman", "Became king", "Poet"],
+["Where did Majnun die?", "Desert near Layla's grave", "His home town", "Banu Amir tribe camp", "Ta'if"],
+["What happened to Layla?", "She died of heartbreak", "She married Majnun", "She moved to Rome", "She fled desert"],
+["Who prevented intruders while Majnun and Layla fainted?", "Wild animals", "His family", "Tribe members", "Messengers"],
+["What is the meaning of 'Majnun'?", "Crazy/possessed by Jinn", "Lover", "Poet", "Warrior"],
+["Which tribe did Qays belong to?", "Banu Amir", "Thaqif", "Udhrite", "Ward tribe"],
+["Who did Layla marry forcibly?", "Ward Althaqafi", "Qays", "Nizami", "Toghrul III"],
+["Which century did Nizami compose the poem?", "12th century", "13th century", "16th century", "14th century"],
+["Which type of poetry influenced Nizami?", "Udhrite", "Epic", "Romantic", "Mystical only"],
+["How many couplets did Jami write in his version?", "3860", "1500", "2000", "1200"],
+["What was Qays doing in the desert?", "Reciting poetry and writing in sand", "Fighting tribe", "Trading", "Sleeping"],
+["Where is Layla generally depicted after marriage?", "Northern Arabia", "Rome", "Banu Amir camp", "Ta'if"],
+["When did Majnun die?", "688 AD", "700 AD", "650 AD", "600 AD"],
+["How many minor incidents occurred during his madness?", "Many", "Few", "None", "Just one"],
+["Who tried to revive Layla?", "Majnun's elderly messenger", "Qays", "Ward", "Nizami"],
+["Which languages did Layla & Majnun theme pass to?", "Persian, Turkish, Indic", "Only Persian", "Arabic only", "Persian and Arabic"],
+["Who was Layla's father concerned about?", "Qays' mental state", "Majnun", "Nizami", "Ward"],
+["Which poem is the third part of Nizami's Khamsa?", "Layla & Majnun", "Eskandar-nama", "Khosrow & Shirin", "Haft Peykar"]
+];
 
-  loginForm.addEventListener('submit', function(e) {
-    e.preventDefault();
+let currentQ = 0;
+let userAnswers = Array(questions.length).fill(null);
 
-    const roll = document.getElementById('rollNumber').value.trim();
-    const password = document.getElementById('password').value;
+// SHOW QUESTION
+function showQuestion(index){
+    const q = questions[index];
+    const container = document.getElementById("questionContainer");
+    let userSelected = userAnswers[index];
+    container.innerHTML = `
+        <div class="question">
+            <h3>${index+1}. ${q[0]}</h3>
+            <label><input type="radio" name="q" value="0" ${userSelected==0?'checked':''}> ${q[1]}</label>
+            <label><input type="radio" name="q" value="1" ${userSelected==1?'checked':''}> ${q[2]}</label>
+            <label><input type="radio" name="q" value="2" ${userSelected==2?'checked':''}> ${q[3]}</label>
+            <label><input type="radio" name="q" value="3" ${userSelected==3?'checked':''}> ${q[4]}</label>
+        </div>
+    `;
+    document.getElementById("warnMsg").style.display = "none";
+    document.querySelector("#navBtns button:first-child").style.display = index === 0 ? "none" : "inline-block";
+    document.querySelector("#navBtns button:last-child").textContent = index === questions.length-1 ? "Finish" : "Next";
+}
+
+// NEXT QUESTION
+function nextQuestion(){
+    const selected = document.querySelector('input[name="q"]:checked');
+    if(!selected){
+        document.getElementById("warnMsg").style.display = "block";
+        return;
+    }
+    userAnswers[currentQ] = parseInt(selected.value);
+    if(currentQ < questions.length - 1){
+        currentQ++;
+        showQuestion(currentQ);
+    } else {
+        finishQuiz();
+    }
+}
+
+// PREVIOUS QUESTION
+function prevQuestion(){
+    const selected = document.querySelector('input[name="q"]:checked');
+    if(selected) userAnswers[currentQ] = parseInt(selected.value);
+    if(currentQ > 0){
+        currentQ--;
+        showQuestion(currentQ);
+    }
+}
+
+// LOGIN VALIDATION
+function login(){
+    let name = document.getElementById("name").value.trim();
+    let roll = document.getElementById("roll").value.trim();
+    let cls = document.getElementById("class").value.trim();
+    let password = document.getElementById("password").value.trim();
+
+    // hide all previous error messages
+    document.getElementById("nameErr").style.display = "none";
+    document.getElementById("rollErr").style.display = "none";
+    document.getElementById("classErr").style.display = "none";
+    document.getElementById("passErr").style.display = "none";
 
     let valid = true;
 
-    if(roll === '') {
-      document.getElementById('rollError').style.display = 'block';
-      valid = false;
-    } else {
-      document.getElementById('rollError').style.display = 'none';
+    if(name === "") { document.getElementById("nameErr").style.display = "block"; valid=false;}
+    if(cls === "") { document.getElementById("classErr").style.display = "block"; valid=false;}
+    if(roll === "" || isNaN(roll) || parseInt(roll) < 1 || parseInt(roll) > 100000){ 
+        document.getElementById("rollErr").style.display = "block"; 
+        valid=false;
     }
 
-    const reversedRoll = roll.split('').reverse().join('');
-    if(password !== reversedRoll || password === '') {
-      document.getElementById('passwordError').style.display = 'block';
-      valid = false;
-    } else {
-      document.getElementById('passwordError').style.display = 'none';
+    // PASSWORD check: reverse of roll number
+    let reversedRoll = roll.split("").reverse().join("");
+    if(password !== reversedRoll) {
+        document.getElementById("passErr").style.display = "block"; 
+        valid=false;
     }
 
-    if(valid) {
-      alert('Login Successful!');
-      loginContainer.style.display = 'none';
-      quizContainer.style.display = 'block';
-    }
-  });
+    if(!valid) return;
 
-  // QUIZ VALIDATION
-  const quizForm = document.getElementById('quizForm');
-  quizForm.addEventListener('submit', function(e) {
-    e.preventDefault();
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("quizBox").style.display = "block";
+    showQuestion(0);
+}
 
-    let valid = true;
-    for(let i=1; i<=20; i++){
-      const options = document.getElementsByName('q'+i);
-      let answered = false;
-      for(const opt of options){
-        if(opt.checked){
-          answered = true;
-          break;
+// FINISH QUIZ
+function finishQuiz(){
+    let score = 0;
+    let wrongHTML = "<h2>❌ Missed Questions</h2>";
+
+    questions.forEach((q,i)=>{
+        if(userAnswers[i] === 0) score++;
+        else{
+            wrongHTML += `<div class="wrong"><strong>Q:</strong> ${q[0]}<br>
+                          <span class="correct">✔ Correct Answer:</span> ${q[1]}</div>`;
         }
-      }
-      if(!answered){
-        document.getElementById('q'+i+'Error').style.display = 'block';
-        valid = false;
-      } else {
-        document.getElementById('q'+i+'Error').style.display = 'none';
-      }
-    }
+    });
 
-    if(valid){
-      alert('Quiz Submitted Successfully!');
-      quizForm.reset();
+    document.getElementById("questionContainer").style.display = "none";
+    document.getElementById("navBtns").style.display = "none";
+    document.getElementById("warnMsg").style.display = "none";
+    document.getElementById("result").innerHTML = `🎉 Congratulations! You scored <b>${score} / ${questions.length}</b> 🎉`;
+    document.getElementById("wrongAnswers").innerHTML = wrongHTML;
+    document.getElementById("encouragement").innerHTML = "🌸 Best of luck for the next time! Take care! 🌸";
+
+    // FLOWER ANIMATION
+    for(let i=0;i<30;i++){
+        let flower = document.createElement("div");
+        flower.className = "flower";
+        flower.style.left = Math.random()*window.innerWidth + "px";
+        flower.style.animationDelay = (Math.random()*2) + "s";
+        flower.style.animationDuration = (2 + Math.random()*3) + "s";
+        document.body.appendChild(flower);
+        setTimeout(()=> flower.remove(),5000);
     }
-  });
+}
 </script>
-
 </body>
 </html>
